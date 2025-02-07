@@ -44,7 +44,7 @@ export function getPhotos(photos) {
     const rect = newFirstImage.getBoundingClientRect();
     window.scrollBy({
       top: rect.top - 20,
-      behavior: 'smooth',
+      behavior: 'smooth'
     });
   }
 
