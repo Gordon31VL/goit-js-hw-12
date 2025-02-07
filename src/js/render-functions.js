@@ -3,14 +3,18 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export const gallery = document.querySelector('.gallery');
+export const loadMoreButton = document.createElement('button');
+loadMoreButton.classList.add('loadButton');
+loadMoreButton.textContent = 'Load More';
 
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 export function getPhotos(photos) {
-  gallery.innerHTML = '';
   let imageBox = '';
+  const oldList = document.querySelectorAll('.image');
+  const oldImageCount = oldList.length;
 
   photos.forEach(image => {
     imageBox += `
@@ -28,6 +32,20 @@ export function getPhotos(photos) {
     `;
   });
 
-  gallery.innerHTML = imageBox;
+  gallery.innerHTML += imageBox;
   lightbox.refresh();
+  loadMoreButton.style.display = 'block';
+  document.body.append(loadMoreButton);
+
+  const newList = document.querySelectorAll('.image');
+  const newFirstImage = newList[oldImageCount];
+
+  if (newList.length > 15) {
+    const rect = newFirstImage.getBoundingClientRect();
+    window.scrollBy({
+      top: rect.top - 20,
+      behavior: 'smooth',
+    });
+  }
+
 }
