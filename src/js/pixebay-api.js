@@ -16,6 +16,7 @@ export async function getData(event) {
 
     if (newUserSearching != userSearching) {
       newUserSearching = userSearching;
+      page = 1;
       gallery.innerHTML = '';
       loadMoreButton.style.display = 'none';
     }
