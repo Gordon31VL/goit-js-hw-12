@@ -1,0 +1,146 @@
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #000000;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid;
+  border-color: #FF3D00 transparent;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+a {
+  all: unset;
+}
+li {
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-family: Montserrat, sans-serif;
+  color: #2e2f42;
+  padding: 36px;
+}
+.gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.gallery-image {
+  object-fit: cover;
+  cursor: pointer;
+}
+.image{
+    border: solid 1px #808080;
+}
+.imageStats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  padding: 4px 20px;
+}
+
+.imageStats p {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+}
+.imageStats span {
+  font-weight: 600;
+}
+.gallery-link {
+  cursor: pointer;
+}
+
+button,
+input {
+  border: none;
+  outline: none;
+  background: none;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  width: 371px;
+  margin-bottom: 32px;
+}
+
+input {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  height: 40px;
+  width: 272px;
+  padding: 8px 16px;
+  border: solid 1px #808080;
+  border-radius: 4px;
+}
+
+input:hover {
+  border-color: #000000;
+}
+
+input:active {
+  border-color: #808080;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #4e75ff;
+  color: #ffffff;
+  font-weight: 500px;
+  font-size: 16px;
+  border-radius: 8px;
+  width: 86px;
+  height: 40px;
+}
+
+button:hover {
+  background-color: #6c8cff;
+}
