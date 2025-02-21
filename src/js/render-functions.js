@@ -1,4 +1,3 @@
-import { getData, searchImageForm } from './pixebay-api.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
@@ -11,10 +10,10 @@ let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+
 export function getPhotos(photos) {
   let imageBox = '';
-  const oldList = document.querySelectorAll('.image');
-  const oldImageCount = oldList.length;
+  const oldImageCount = gallery.children.length;
 
   photos.forEach(image => {
     imageBox += `
@@ -32,7 +31,7 @@ export function getPhotos(photos) {
     `;
   });
 
-  gallery.innerHTML += imageBox;
+  gallery.insertAdjacentHTML('beforeend', imageBox);
   lightbox.refresh();
   loadMoreButton.style.display = 'block';
   document.body.append(loadMoreButton);
@@ -44,8 +43,7 @@ export function getPhotos(photos) {
     const rect = newFirstImage.getBoundingClientRect();
     window.scrollBy({
       top: rect.top - 20,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   }
-
 }
