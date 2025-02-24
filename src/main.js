@@ -1,22 +1,25 @@
 import { getData } from './js/pixebay-api';
-import { loadMoreButton, getPhotos } from './js/render-functions';
+import { getPhotos } from './js/render-functions';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export const gallery = document.querySelector('.gallery');
+export const loadMoreButton = document.createElement('button');
+const loader = document.createElement('span');
+loadMoreButton.classList.add('loadButton');
+loadMoreButton.textContent = 'Load More';
+loader.classList.add('loader');
+
 
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
-const loader = document.createElement('span');
-loader.classList.add('loader');
 
 export const searchImageForm = document.querySelector('.searchPhoto');
-export let responseData = {};
 let page = 1;
 let newUserSearching = '';
 let totalImages = 15;
@@ -33,7 +36,6 @@ searchImageForm.addEventListener('submit', async event => {
       page = 1;
       totalImages = 15;
       gallery.innerHTML = '';
-      loadMoreButton.style.display = 'none';
     }
 
     const responseData = await getData(newUserSearching, page);

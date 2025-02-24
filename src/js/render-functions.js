@@ -1,10 +1,4 @@
-import { gallery } from "../main";
-
-export const loadMoreButton = document.createElement('button');
-loadMoreButton.classList.add('loadButton');
-loadMoreButton.textContent = 'Load More';
-
-
+import { gallery, loadMoreButton } from "../main";
 
 export function getPhotos(photos) {
   let imageBox = '';
