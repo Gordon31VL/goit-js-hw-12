@@ -1,8 +1,16 @@
 import { getData } from './js/pixebay-api';
-import { loadMoreButton, gallery, getPhotos } from './js/render-functions';
+import { loadMoreButton, getPhotos } from './js/render-functions';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
+export const gallery = document.querySelector('.gallery');
+
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 const loader = document.createElement('span');
 loader.classList.add('loader');
@@ -19,7 +27,7 @@ searchImageForm.addEventListener('submit', async event => {
 
   try {
     let userSearching = searchImageForm.inputText.value.trim();
-    
+
     if (newUserSearching != userSearching) {
       newUserSearching = userSearching;
       page = 1;
@@ -59,6 +67,7 @@ searchImageForm.addEventListener('submit', async event => {
     console.error(error);
   } finally {
     document.body.removeChild(loader);
+    lightbox.refresh();
   }
 });
 
@@ -79,12 +88,13 @@ loadMoreButton.addEventListener('click', async event => {
 
       return;
     }
-    
+
     getPhotos(responseData.hits);
     loadMoreButton.style.display = 'block';
   } catch (error) {
     console.error(error);
   } finally {
     document.body.removeChild(loader);
+    lightbox.refresh();
   }
 });

@@ -1,15 +1,10 @@
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+import { gallery } from "../main";
 
-export const gallery = document.querySelector('.gallery');
 export const loadMoreButton = document.createElement('button');
 loadMoreButton.classList.add('loadButton');
 loadMoreButton.textContent = 'Load More';
 
-let lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
+
 
 export function getPhotos(photos) {
   let imageBox = '';
@@ -32,7 +27,6 @@ export function getPhotos(photos) {
   });
 
   gallery.insertAdjacentHTML('beforeend', imageBox);
-  lightbox.refresh();
   loadMoreButton.style.display = 'block';
   document.body.append(loadMoreButton);
 
