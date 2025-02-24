@@ -12,30 +12,32 @@ loadMoreButton.classList.add('loadButton');
 loadMoreButton.textContent = 'Load More';
 loader.classList.add('loader');
 
-
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
 
-
 export const searchImageForm = document.querySelector('.searchPhoto');
 let page = 1;
 let newUserSearching = '';
-let totalImages = 15;
 
 searchImageForm.addEventListener('submit', async event => {
   event.preventDefault();
   document.body.append(loader);
 
   try {
-    let userSearching = searchImageForm.inputText.value.trim();
+    gallery.innerHTML = '';
+
+    if (document.body.contains(loadMoreButton)) {
+      document.body.removeChild(loadMoreButton);
+    }
+
+    searchImageForm.inputText.value = searchImageForm.inputText.value.trim();
+    let userSearching = searchImageForm.inputText.value;
 
     if (newUserSearching != userSearching) {
       newUserSearching = userSearching;
       page = 1;
-      totalImages = 15;
-      gallery.innerHTML = '';
     }
 
     const responseData = await getData(newUserSearching, page);
@@ -65,6 +67,7 @@ searchImageForm.addEventListener('submit', async event => {
     }
 
     getPhotos(responseData.hits);
+    document.body.append(loadMoreButton);
   } catch (error) {
     console.error(error);
   } finally {
@@ -75,24 +78,31 @@ searchImageForm.addEventListener('submit', async event => {
 
 loadMoreButton.addEventListener('click', async event => {
   document.body.append(loader);
-  loadMoreButton.style.display = 'none';
+  document.body.removeChild(loadMoreButton);
 
   try {
-    totalImages += 15;
     page++;
     const responseData = await getData(newUserSearching, page);
+    const oldImageCount = gallery.children.length;
 
-    if (responseData.totalHits <= totalImages) {
-      loadMoreButton.style.display = 'none';
+    getPhotos(responseData.hits);
+
+    if (responseData.totalHits <= gallery.children.length) {
       iziToast.info({
         message: `We're sorry, but you've reached the end of search results.`,
       });
 
       return;
     }
+    const newList = document.querySelectorAll('.image');
+    const newFirstImage = newList[oldImageCount];
+    const rect = newFirstImage.getBoundingClientRect();
+    window.scrollBy({
+      top: rect.top - 20,
+      behavior: 'smooth',
+    }); 
 
-    getPhotos(responseData.hits);
-    loadMoreButton.style.display = 'block';
+    document.body.append(loadMoreButton);
   } catch (error) {
     console.error(error);
   } finally {

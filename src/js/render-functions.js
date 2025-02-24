@@ -1,8 +1,7 @@
-import { gallery, loadMoreButton } from "../main";
+import { gallery } from "../main";
 
 export function getPhotos(photos) {
   let imageBox = '';
-  const oldImageCount = gallery.children.length;
 
   photos.forEach(image => {
     imageBox += `
@@ -21,17 +20,4 @@ export function getPhotos(photos) {
   });
 
   gallery.insertAdjacentHTML('beforeend', imageBox);
-  loadMoreButton.style.display = 'block';
-  document.body.append(loadMoreButton);
-
-  const newList = document.querySelectorAll('.image');
-  const newFirstImage = newList[oldImageCount];
-
-  if (newList.length > 15) {
-    const rect = newFirstImage.getBoundingClientRect();
-    window.scrollBy({
-      top: rect.top - 20,
-      behavior: 'smooth',
-    });
-  }
 }
