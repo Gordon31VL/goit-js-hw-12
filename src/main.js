@@ -7,10 +7,10 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 export const gallery = document.querySelector('.gallery');
 export const loadMoreButton = document.createElement('button');
-const loader = document.createElement('span');
+const loader = document.querySelector('.loader');
+loader.style.display = 'none';
 loadMoreButton.classList.add('loadButton');
 loadMoreButton.textContent = 'Load More';
-loader.classList.add('loader');
 
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -23,26 +23,17 @@ let newUserSearching = '';
 
 searchImageForm.addEventListener('submit', async event => {
   event.preventDefault();
-  document.body.append(loader);
+  loader.style.display = 'block';
+  page = 1;
 
   try {
     gallery.innerHTML = '';
+    loadMoreButton.style.display = 'none';
 
-    if (document.body.contains(loadMoreButton)) {
-      document.body.removeChild(loadMoreButton);
-    }
+    newUserSearching = searchImageForm.inputText.value.trim();
+    searchImageForm.inputText.value = newUserSearching;  //Заповнення імпута трімнутим значенням, саме те, що відправляється на бекенд
 
-    searchImageForm.inputText.value = searchImageForm.inputText.value.trim();
-    let userSearching = searchImageForm.inputText.value;
-
-    if (newUserSearching != userSearching) {
-      newUserSearching = userSearching;
-      page = 1;
-    }
-
-    const responseData = await getData(newUserSearching, page);
-
-    if (!userSearching) {
+    if (!newUserSearching || newUserSearching === '') {
       iziToast.error({
         color: '#EF4040',
         message: 'Error, input field is empty',
@@ -52,6 +43,8 @@ searchImageForm.addEventListener('submit', async event => {
       });
       return;
     }
+
+    const responseData = await getData(newUserSearching, page);
 
     if (responseData.hits.length === 0) {
       iziToast.error({
@@ -67,18 +60,19 @@ searchImageForm.addEventListener('submit', async event => {
     }
 
     getPhotos(responseData.hits);
-    document.body.append(loadMoreButton);
+    loadMoreButton.style.display = 'block';
   } catch (error) {
     console.error(error);
   } finally {
-    document.body.removeChild(loader);
+    loader.style.display = 'none';
+    document.body.append(loadMoreButton);
     lightbox.refresh();
   }
 });
 
 loadMoreButton.addEventListener('click', async event => {
-  document.body.append(loader);
-  document.body.removeChild(loadMoreButton);
+  loader.style.display = 'block';
+  loadMoreButton.style.display = 'none';
 
   try {
     page++;
@@ -100,13 +94,13 @@ loadMoreButton.addEventListener('click', async event => {
     window.scrollBy({
       top: rect.top - 20,
       behavior: 'smooth',
-    }); 
+    });
 
-    document.body.append(loadMoreButton);
+    loadMoreButton.style.display = 'block';
   } catch (error) {
     console.error(error);
   } finally {
-    document.body.removeChild(loader);
+    loader.style.display = 'none';
     lightbox.refresh();
   }
 });
